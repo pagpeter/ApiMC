@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>ApiMC</title>
+    <meta content="ApiMC" property="og:title" />
+    <meta content="ApiMC namemc api" property="og:description" />
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin-right: 10%;
+        margin-left: 10%;
+        color: #1d3557;
+        background-color: #f1faee;
+        line-height: 1.2;
+      }
+      h1 {
+        margin: 30px;
+        text-align: center;
+      }
+      details summary > * {
+        display: inline;
+      }
+      h3 {
+        margin: 10px;
+      }
+      details {
+        margin: 10px;
+      }
+      details summary {
+        margin-bottom: 10px;
+      }
+      .code {
+        overflow-x: scroll;
+        padding: 15px;
+        padding-left: 30px;
+        padding-right: 30px;
+        background-color: #1d3557;
+        color: #f1faee;
+        font-family: Menlo, Monaco, 'Courier New', monospace;
+        line-height: 1.5;
+        border-radius: 5px;
+      }
+      .red {
+        color: #e63946;
+      }
+
+      .green {
+        color: #08c66a;
+      }
+
+      .lgreen {
+        color: #16f288;
+      }
+
+      .yellow {
+        color: #ffd166;
+      }
+
+      .comment {
+        color: rgb(162, 162, 162);
+      }
+
+      .pink {
+        color: rgb(230, 132, 148);
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>ApiMC - API for namemc.com</h1>
+    <!-- <p>
+      This API is build by peet#6446. Please don't DM me for general programming
+      help. The source code of this project can be found
+      <a href="https://github.com/wwhtrbbtt/NameMCScrape"> here</a>. Feel free
+      to make a pull request!
+    </p> -->
+
+    <h2>Endpoints</h2>
+
+    <details>
+      <summary><h3>/api/name/{name}</h3></summary>
+      <p>Example: GET <a href="/api/name/notch">/api/name/notch</a></p>
+      <p>Response data:</p>
+      <div class="code">
+        <pre>
+{
+	"name": "notch",
+	"uuid": "069a79f4-44e9-4726-a5be-fca90e38aaf5",
+	"views": 5789,
+	"location": null,
+	"socials": {
+		"discord": "notch#0000",
+		"twitter": "notch"
+	}
+}</pre
+        >
+      </div>
+    </details>
+
+    <details>
+      <summary><h3>/api/searches/{minSearches}</h3></summary>
+      <p>Example: GET <a href="/api/searches/10">/api/searches/10</a></p>
+      <p>Response data:</p>
+      <div class="code">
+        <pre>
+[
+	{
+		"name": "notch",
+		"searches": "421",
+		"droptime": "1527098983"
+	},
+	{
+		"name": "notch2",
+		"searches": "68",
+		"droptime": "1527098983"
+	}
+]</pre
+        >
+      </div>
+    </details>
+
+    <details>
+      <summary><h3>/api/3chars</h3></summary>
+      <p>Example: GET <a href="/api/3chars">/api/3chars</a></p>
+      <p>Response data:</p>
+      <div class="code">
+        <pre>
+[
+	{
+		"name": "abc",
+		"searches": "421",
+		"droptime": "1527098983"
+	},
+	{
+		"name": "def",
+		"searches": "68",
+		"droptime": "1527098983"
+	}
+]</pre
+        >
+      </div>
+    </details>
+
+    <h2>Code snippets</h2>
+    <details>
+      <summary><h3>Python3 (requests)</h3></summary>
+      <div class="code">
+        <pre><span class="red">from</span> requests <span class="red">import</span> get
+
+name = <span class="green">"notch"</span>
+url = <span class="red">f</span><span class="green">"https://api.com/api/name/</span><span class="pink">{</span>name<span class="pink">}</span><span class="green">"</span>
+
+r = <span class="yellow">get</span>(url)
+
+<span class="comment"># handle error if non-200 response</span>
+<span class="red">if not</span> r.ok: 
+    <span class="yellow">exit</span>(<span class="green">"Error! Couldn't parse data"</span>)
+
+data = r.<span class="yellow">json</span>()
+<span class="yellow">print</span>(data)</pre>
+      </div>
+    </details>
+
+    <details>
+      <summary><h3>Golang</h3></summary>
+
+      <div class="code">
+        <pre><span class="lgreen">package</span> <span class="yellow">main</span>
+
+<span class="lgreen">import</span> <span class="green">"net/http"</span>
+<span class="lgreen">import</span> <span class="green">"fmt"</span>
+
+<span class="red">func</span> <span class="pink">main</span>() {
+    name := <span class="green">"notch"</span>
+    url := <span class="green">"https://api.com/api/name/"</span> + name
+
+    <span class="comment">// Don't ignore errors in production</span>
+    resp, _ := http.<span class="yellow">Get</span>(url)
+
+    <span class="comment">// Handle response</span>
+    <span class="red">defer</span> resp.Body.<span class="yellow">Close()</span>
+    body, _ := io.<span class="yellow">ReadAll</span>(resp.Body)
+	
+    fmt.<span class="yellow">Println</span>(<span class="yellow">string</span>(body))
+}</pre>
+      </div>
+    </details>
+  </body>
+</html>
