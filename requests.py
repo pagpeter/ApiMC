@@ -9,6 +9,8 @@ import h2.events
 SERVER_NAME = 'namemc.com'
 SERVER_PORT = 443
 
+DEBUG = False
+
 
 def get_ssl_connection(name: str, port: int = 443) -> ssl.SSLSocket:
     # generic socket and ssl configuration
@@ -27,7 +29,7 @@ def send_http2_preamble(sock: ssl.SSLSocket):
 
 
 def update_settings(conn: h2.connection.H2Connection,
-                    sock:ssl.SSLSocket) -> None:
+                    sock: ssl.SSLSocket) -> None:
     conn.update_settings({
         h2.settings.SettingCodes.MAX_CONCURRENT_STREAMS: 65536,
         h2.settings.SettingCodes.INITIAL_WINDOW_SIZE: 65535
@@ -48,7 +50,8 @@ def send_prio_frames(conn: h2.connection.H2Connection,
 
 
 def send_headers(conn: h2.connection.H2Connection,
-        sock: ssl.SSLSocket, path: str = "/") -> None:
+                 sock: ssl.SSLSocket,
+                 path: str = "/") -> None:
     headers = [
         (':method', 'GET'),
         (':path', path),
@@ -73,7 +76,8 @@ def receive_data(conn: h2.connection.H2Connection, sock: ssl.SSLSocket) -> str:
         # feed raw data into h2, and process resulting events
         events = conn.receive_data(data)
         for event in events:
-            print(event)
+            if DEBUG:
+                print(event)
             if isinstance(event, h2.events.DataReceived):
                 # update flow control so the server doesn't starve us
                 conn.acknowledge_received_data(event.flow_controlled_length,
@@ -107,13 +111,14 @@ def make_request(path: str = "/") -> str:
     s.sendall(c.data_to_send())
 
     # close the socket
-    s.close() 
+    s.close()
 
     if body.startswith("Found. Redirecting to "):
         print(body)
         return make_request(body.split(" ")[-1])
 
     return body
+
 
 if __name__ == "__main__":
     print(make_request("/"))
