@@ -40,6 +40,6 @@ Returns all names that will drop soon with 3 characters
 
 ## TODO
 
-- [] Fix docs.html
-- [] Extract more information
-- [] Make cloudflare not block you on flagged IPs (pretty much not possible, if we don't use a browser)
+- [ ] Fix docs.html
+- [ ] Extract more information
+- [ ] Make cloudflare not block you on flagged IPs (pretty much not possible, if we don't use a browser)
